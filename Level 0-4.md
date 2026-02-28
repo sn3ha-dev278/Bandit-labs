@@ -19,10 +19,6 @@ ls -la
 cat readme
 ```
 
-```
-ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
-```
-
 What stuck with me: a password just sitting in a plain text file feels wrong, and it is. In a real system, that would be a problem — anyone who gets access to that directory gets the password too. Good reminder that hiding something is not the same as securing it.
 
 ---
@@ -39,10 +35,6 @@ The fix is to give it a proper path so it knows you mean the file:
 cat ./-
 ```
 
-```
-263JGJPfgU6LtdEvgfWU1XP5yac29mFx
-```
-
 I wouldn't have thought a filename could cause that kind of confusion. It made me realise that the terminal interprets what you type in ways that aren't always obvious, and little things like a dash or a dot actually mean something.
 
 ---
@@ -57,9 +49,6 @@ Wrapping the name in quotes solved it:
 cat "./--spaces in this filename--"
 ```
 
-```
-MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
-```
 
 Simple fix once you know it, but it's one of those things that would have had me staring at the screen for a while without a nudge in the right direction. I can see how spaces in filenames would break a lot of scripts if you're not careful about quoting.
 
@@ -78,9 +67,6 @@ ls -la
 cat ...Hiding-From-You
 ```
 
-```
-2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
-```
 
 In Linux, any file that starts with a dot is hidden from the regular `ls` view. I knew about dotfiles in a vague sense (like `.bashrc`) but hadn't thought about it as something that could be used to hide things. Makes sense that `ls -la` should probably just be the default habit — you don't want to miss things.
 
@@ -111,10 +97,6 @@ file ./*
 
 ```bash
 cat ./-file07
-```
-
-```
-4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
 ```
 
 The `file` command was new to me. It doesn't go by the filename or extension — it looks at the actual contents of the file to figure out what it is. That's a useful thing to know. Also just a good reminder to look for the right tool before doing something the slow way.
