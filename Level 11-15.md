@@ -73,21 +73,45 @@ Honestly this level was more tedious than difficult, but it taught me to always 
 
 ## Level 13 → 14: Logging in With a Key File Instead of a Password
 
-No password to find this time. Instead, there's a private SSH key file in the home directory called `sshkey.private`. The goal is to use it to log into the next level's account.
+No password to find this time. Instead, there's a file called `sshkey.private` sitting right in the home directory. The goal was simple: use that private key to SSH into `bandit14`.
 
-SSH supports key-based authentication as an alternative to passwords — the server checks whether your key matches the one it expects, rather than asking you to type a password. It's actually considered more secure than password login when set up properly.
+I'd read about public-key authentication before, but this was the first time I actually had to *use* it. The theory is elegant — the server already has your public key, you prove you have the matching private key, no password typing needed. 
+
+I tried with the most commonly used command
 
 ```bash
 ssh -i sshkey.private bandit14@localhost -p 2220
 ```
 
-Once in as bandit14, the password for this level is stored at a known path:
+…immediately failed with the message:
+
+```
+!!! You are trying to log into this SSH server with a password on port 2220 from localhost.
+!!! Connecting from localhost is blocked to conserve resources.
+!!! Please log out and log in again.
+```
+I was staring at that and trying to figure out what went wrong. Turns out the Bandit server is blocking SSH connections from localhost. After a bit of analyzing, I figured out that the SSH key must be used from my own machine, not from inside the Bandit server
+
+From my local terminal (after `exit`ing bandit13):
+
+```bash
+# Copied the key to my local machine
+scp -P 2220 bandit13@bandit.labs.overthewire.org:~/sshkey.private .
+
+#Changed the permissions
+chmod 600 sshkey.private
+
+# Logged in through my local machine
+ssh -i sshkey.private -p 2220 bandit14@bandit.labs.overthewire.org
+```
+
+I hit Enter after the command and the banner appeared and I was suddenly at `bandit14@bandit:~$` without typing a single password!
+Once inside:
 
 ```bash
 cat /etc/bandit_pass/bandit14
 ```
-
-The `-i` flag tells SSH which key file to use. I hadn't done key-based SSH before this — it felt a bit different from just typing a password, but once it worked it made sense. Key files need to have the right permissions too, otherwise SSH refuses to use them (`chmod 600` on the key file is usually required).
+This level was less about finding something hidden and more about understanding how SSH authentication actually works. I learned how to use the -i flag to authenticate with a private key instead of a password, why SSH keys need strict permissions (chmod 600), and how specifying the correct port with -p 2220 matters. The biggest takeaway was realizing that context matters — running the right command from the wrong place (localhost vs my own machine) can completely change the outcome.
 
 ---
 
@@ -115,7 +139,7 @@ Same idea as the previous level — send the current password to a port (30001 t
 ```bash
 openssl s_client -connect localhost:30001
 ```
-After the connection is established, paste in the password from the previous level.
+After the connection is established, paste in the correct password from the previous level.
 
 There's a lot of output when `openssl s_client` connects — certificate details, handshake information, and so on. Most of it can be ignored for this purpose; once it settles you just type or paste your input. The important takeaway is understanding that SSL/TLS is a layer that sits on top of a regular connection to encrypt the data going back and forth — something that's fundamental to how secure connections work on the web.
 
