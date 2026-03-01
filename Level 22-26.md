@@ -1,4 +1,4 @@
-## Core Security Concepts Reinforced
+## Cancepts learnt
 - Cron job abuse and scheduled task enumeration
 - Deterministic filename generation and hash analysis
 - Privilege escalation via misconfigured scripts
