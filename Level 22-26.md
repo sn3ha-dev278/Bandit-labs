@@ -1,12 +1,3 @@
-## Cancepts learnt
-- Cron job abuse and scheduled task enumeration
-- Deterministic filename generation and hash analysis
-- Privilege escalation via misconfigured scripts
-- Command injection via writable cron directories
-- Basic brute-force automation
-- Pager/editor shell escape techniques
-- Execution context and permission boundaries
-
 ## Level 21 → 22: Cron Jobs and Scheduled Scripts
 
 There's a cron job running on this system — a scheduled task that runs automatically at set intervals. The hint points to `/etc/cron.d/` where cron configurations are stored.
